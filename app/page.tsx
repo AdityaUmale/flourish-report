@@ -62,6 +62,25 @@ export default function HomePage() {
     return [];
   };
 
+  // Calculate question offset for continuous numbering
+  const getQuestionOffset = () => {
+    if (currentStep === 1) return 0; // Context questions start at 1
+    if (currentStep === 2) return CONTEXT_QUESTIONS.length;
+    if (currentStep >= 3 && currentStep <= 8) {
+      let offset = CONTEXT_QUESTIONS.length;
+      for (let i = 0; i < currentStep - 2; i++) {
+        offset += DOMAINS[i]?.questions.length || 0;
+      }
+      return offset;
+    }
+    if (currentStep === 9) {
+      let offset = CONTEXT_QUESTIONS.length;
+      DOMAINS.forEach(d => offset += d.questions.length);
+      return offset;
+    }
+    return 0;
+  };
+
   const getCurrentSectionInfo = () => {
     if (currentStep === 0) return { title: 'About You', subtitle: 'Let\'s start with some basic information' };
     if (currentStep === 1) return { title: 'Your Current Situation', subtitle: 'Help us understand your life context' };
@@ -336,7 +355,7 @@ export default function HomePage() {
                 {getCurrentQuestions().map((question, index) => (
                   <div key={question.id} className="card p-5">
                     <p className="mb-4 text-[15px] leading-relaxed">
-                      <span className="text-[rgb(var(--color-text-muted))] mr-2">{index + 1}.</span>
+                      <span className="text-[rgb(var(--color-text-muted))] mr-2">{getQuestionOffset() + index + 1}.</span>
                       {question.text}
                     </p>
 
