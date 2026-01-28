@@ -67,6 +67,8 @@ export function calculateContextualFactors(
     return {
         isStudent: userInfo.isStudent,
         isEmployed: userInfo.isEmployed,
+        isBusinessOwner: userInfo.isBusinessOwner,
+        isUnemployed: userInfo.isUnemployed,
         basicNeedsMet: avgContextScore >= 4,
         survivalStressLevel,
     };

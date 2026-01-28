@@ -12,6 +12,8 @@ export interface UserInfo {
   location: string;
   isStudent: boolean;
   isEmployed: boolean;
+  isBusinessOwner: boolean;
+  isUnemployed: boolean;
 }
 
 export interface Question {
@@ -52,6 +54,8 @@ export interface DomainResult {
 export interface ContextualFactors {
   isStudent: boolean;
   isEmployed: boolean;
+  isBusinessOwner: boolean;
+  isUnemployed: boolean;
   basicNeedsMet: boolean; // Derived from context questions
   survivalStressLevel: 'stable' | 'moderate' | 'survival';
 }

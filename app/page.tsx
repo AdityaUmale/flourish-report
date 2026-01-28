@@ -110,6 +110,8 @@ export default function HomePage() {
         location: userInfo.location || '',
         isStudent: userInfo.isStudent || false,
         isEmployed: userInfo.isEmployed || false,
+        isBusinessOwner: userInfo.isBusinessOwner || false,
+        isUnemployed: userInfo.isUnemployed || false,
       };
 
       localStorage.setItem('flourish-results', JSON.stringify({
@@ -142,15 +144,8 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[rgb(15,15,20)]">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-[rgb(var(--color-border))]">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="text-lg font-semibold tracking-tight">Flourish</span>
-          <span className="text-sm text-[rgb(var(--color-text-muted))]">
-            {currentStep + 1} of {TOTAL_STEPS}
-          </span>
-        </div>
-        {/* Progress bar */}
+      {/* Progress bar only */}
+      <div className="sticky top-0 z-50 glass">
         <div className="progress-bar">
           <motion.div
             className="progress-fill"
@@ -159,7 +154,7 @@ export default function HomePage() {
             transition={{ duration: 0.3 }}
           />
         </div>
-      </header>
+      </div>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
         <AnimatePresence mode="wait">
@@ -260,40 +255,77 @@ export default function HomePage() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isStudent
-                    ? 'border-lime-400 bg-lime-400/10'
-                    : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
-                    }`}>
-                    <input
-                      type="checkbox"
-                      checked={userInfo.isStudent || false}
-                      onChange={e => setUserInfo(prev => ({ ...prev, isStudent: e.target.checked }))}
-                      className="sr-only"
-                    />
-                    <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isStudent ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                <div className="pt-2">
+                  <label className="block text-sm font-medium mb-3">Current Status (select all that apply)</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isStudent
+                      ? 'border-lime-400 bg-lime-400/10'
+                      : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
                       }`}>
-                      {userInfo.isStudent && <Check className="w-3 h-3 text-white" />}
-                    </div>
-                    <span className="text-sm">I&apos;m a student</span>
-                  </label>
+                      <input
+                        type="checkbox"
+                        checked={userInfo.isStudent || false}
+                        onChange={e => setUserInfo(prev => ({ ...prev, isStudent: e.target.checked }))}
+                        className="sr-only"
+                      />
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isStudent ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                        }`}>
+                        {userInfo.isStudent && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <span className="text-sm">I&apos;m a student</span>
+                    </label>
 
-                  <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isEmployed
-                    ? 'border-lime-400 bg-lime-400/10'
-                    : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
-                    }`}>
-                    <input
-                      type="checkbox"
-                      checked={userInfo.isEmployed || false}
-                      onChange={e => setUserInfo(prev => ({ ...prev, isEmployed: e.target.checked }))}
-                      className="sr-only"
-                    />
-                    <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isEmployed ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                    <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isEmployed
+                      ? 'border-lime-400 bg-lime-400/10'
+                      : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
                       }`}>
-                      {userInfo.isEmployed && <Check className="w-3 h-3 text-white" />}
-                    </div>
-                    <span className="text-sm">I&apos;m employed</span>
-                  </label>
+                      <input
+                        type="checkbox"
+                        checked={userInfo.isEmployed || false}
+                        onChange={e => setUserInfo(prev => ({ ...prev, isEmployed: e.target.checked }))}
+                        className="sr-only"
+                      />
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isEmployed ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                        }`}>
+                        {userInfo.isEmployed && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <span className="text-sm">I&apos;m employed</span>
+                    </label>
+
+                    <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isBusinessOwner
+                      ? 'border-lime-400 bg-lime-400/10'
+                      : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
+                      }`}>
+                      <input
+                        type="checkbox"
+                        checked={userInfo.isBusinessOwner || false}
+                        onChange={e => setUserInfo(prev => ({ ...prev, isBusinessOwner: e.target.checked }))}
+                        className="sr-only"
+                      />
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isBusinessOwner ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                        }`}>
+                        {userInfo.isBusinessOwner && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <span className="text-sm">I own a business</span>
+                    </label>
+
+                    <label className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${userInfo.isUnemployed
+                      ? 'border-lime-400 bg-lime-400/10'
+                      : 'border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-text-muted))]'
+                      }`}>
+                      <input
+                        type="checkbox"
+                        checked={userInfo.isUnemployed || false}
+                        onChange={e => setUserInfo(prev => ({ ...prev, isUnemployed: e.target.checked }))}
+                        className="sr-only"
+                      />
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center ${userInfo.isUnemployed ? 'bg-lime-400 border-lime-400' : 'border-[rgb(var(--color-border))]'
+                        }`}>
+                        {userInfo.isUnemployed && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <span className="text-sm">I&apos;m not working</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             )}

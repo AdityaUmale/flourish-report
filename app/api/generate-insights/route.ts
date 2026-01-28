@@ -37,7 +37,17 @@ export async function POST(request: NextRequest) {
 
         // Build life stage context
         let lifeStageContext = '';
-        if (contextualFactors.isStudent && !contextualFactors.isEmployed) {
+        const statuses: string[] = [];
+        if (contextualFactors.isStudent) statuses.push('student');
+        if (contextualFactors.isEmployed) statuses.push('employed');
+        if (contextualFactors.isBusinessOwner) statuses.push('business owner/entrepreneur');
+        if (contextualFactors.isUnemployed) statuses.push('currently not working');
+
+        if (contextualFactors.isUnemployed && !contextualFactors.isStudent) {
+            lifeStageContext = 'UNEMPLOYED/SEEKING - Focus on building confidence, transferable skills, and low-cost opportunities. Be encouraging.';
+        } else if (contextualFactors.isBusinessOwner) {
+            lifeStageContext = 'ENTREPRENEUR/BUSINESS OWNER - Acknowledge business pressures. Focus on work-life balance and sustainable practices.';
+        } else if (contextualFactors.isStudent && !contextualFactors.isEmployed) {
             lifeStageContext = 'FULL-TIME STUDENT - Professional and financial scores should be interpreted with developmental leniency.';
         } else if (contextualFactors.isStudent && contextualFactors.isEmployed) {
             lifeStageContext = 'WORKING STUDENT - Balancing education and work. Acknowledge time constraints.';
@@ -46,6 +56,8 @@ export async function POST(request: NextRequest) {
         } else {
             lifeStageContext = 'TRANSITIONING - Focus on potential and transferable strengths.';
         }
+
+        const statusString = statuses.length > 0 ? `User is: ${statuses.join(', ')}.` : 'User status: unspecified.';
 
         // Build survival-first context
         let survivalContext = '';
@@ -91,6 +103,7 @@ export async function POST(request: NextRequest) {
 - Name: ${userInfo.name}
 - Age: ${userInfo.age}
 - Gender: ${userInfo.gender}
+- ${statusString}
 - Life Stage: ${lifeStageContext}
 ${survivalContext ? `- Note: ${survivalContext}` : ''}
 
