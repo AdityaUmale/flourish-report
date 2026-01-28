@@ -308,17 +308,16 @@ export default function HomePage() {
                       {question.text}
                     </p>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-6 gap-2">
                       {RESPONSE_OPTIONS.map(option => (
                         <button
                           key={option.value}
                           type="button"
                           onClick={() => handleResponse(question.id, option.value)}
-                          className={`likert-btn ${getResponse(question.id) === option.value ? 'selected' : ''}`}
+                          className={`likert-btn flex flex-col items-center justify-center p-2 h-auto min-h-[60px] ${getResponse(question.id) === option.value ? 'selected' : ''}`}
                           title={option.label}
                         >
-                          <span className="hidden sm:inline text-xs">{option.label}</span>
-                          <span className="sm:hidden">{option.value}</span>
+                          <span className="text-xs font-medium text-center leading-tight">{option.label}</span>
                         </button>
                       ))}
                     </div>
