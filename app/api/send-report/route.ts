@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
         // Send email with Resend
         const { data, error } = await resend.emails.send({
-            from: 'Flourish Report <onboarding@resend.dev>',
+            from: 'Flourish Report <hello@pathshala.site>',
             to: email,
             subject: `Your Flourishing Report - ${reportData.userInfo.name}`,
             html: `
